@@ -25,16 +25,14 @@ template<class T, class K>
 inline int Table<T, K>::getPrimeSize(int newSize)
 {
     if (isPrime(newSize))
-        return;
+        return newSize;
     for (int up = newSize + 1, down = newSize - 1; down > 2; up++, down--)
     {
         if (isPrime(up)) {
-            newSize = up;
-            return;
+            return up;
         }
         else if (isPrime(down)) {
-            newSize = down;
-            return;
+            return down;
         }
     }
 }
@@ -72,13 +70,15 @@ inline int Table<T, K>::search(K key)
 }
 
 template<class T, class K>
-void Table<T, K>::insert(T data, K key)
+inline void Table<T, K>::insert(T& data, K& key)
 {
-    myTable[hash(key)] = new Item(data, key, full);
+    int i = hash(key);
+
+    myTable[] = new Item(data, key, full);
 }
 
 template<class T, class K>
-void Table<T, K>::remove(T data, K key)
+inline void Table<T, K>::remove(T& data, K& key)
 {
     
 }

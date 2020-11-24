@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-
+#include "Table.h"
+#include <list>
 using namespace std;
 
 int main()
@@ -16,7 +17,7 @@ int main()
 	//cout << "a: Add a subject and a title" << endl;
 	//cout << "d: Del a subject " << endl;
 	//cout << "t: print all titles of the subject " << endl;
-	//cout << "s: print N first appearances of a subect " << endl;
+	//cout << "s: print N first appearances of a subject " << endl;
 	//cout << "p: print all non-empty entries " << endl;
 	//cout << "e: Exit" << endl;
 	//do
@@ -43,5 +44,14 @@ int main()
 	//	default: cout << "ERROR\n";  break;
 	//	}
 	//} while (ch != 'e');
+	Table<string, int> t(1000);
+	string s = "noam"; int k = 54;
+	t.insert(s, k);
+	Table<list<string>, string> t2(1000);
+	list<string> l = { "noam", "shmuel", "shushan" };
+	string s2 = "names";
+	t2.insert(l, s2);
+
+
 	return 0;
 }
