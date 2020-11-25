@@ -7,40 +7,42 @@
 /// <typeparam name="K"></typeparam>
 /// <param name="newSize"></param>
 template<class T, class K>
-inline Table<T, K>::Table(int newSize)
+Table<T, K>::Table(int newSize)
 {
-    size = getPrimeSize(newSize);
-	myTable = new Item[size];
+    _size = getPrimeSize(newSize);
+    myTable.assign(size(), NULL);
 }
 
 template<class T, class K>
 Table<T, K>::~Table()
 {
-    for (int i = 0; i < getSize(); i++)
-        delete myTable[i];
-    delete[] myTable;
+    for (int i = 0; i < size(); i++)
+    {
+        if (myTable[i] != NULL)
+            delete myTable[i];
+    }
 }
 
 template<class T, class K>
 int Table<T, K>::getPrimeSize(int newSize)
 {
-	if (isPrime(newSize))
-		return newSize;
-	for (int up = newSize + 1, down = newSize - 1; down > 2; up++, down--)
-	{
-		if (isPrime(up)) {
-			return up;
-		}
-		else if (isPrime(down)) {
-			return down;
-		}
-	}
+    if (isPrime(newSize))
+        return newSize;
+    for (int up = newSize + 1, down = newSize - 1; down > 2; up++, down--)
+    {
+        if (isPrime(up)) {
+            return up;
+        }
+        else if (isPrime(down)) {
+            return down;
+        }
+    }
 }
 
 template<class T, class K>
 int Table<T, K>::size()
 {
-    return size;
+    return _size;
 }
 
 template<class T, class K>
@@ -53,7 +55,7 @@ int Table<T, K>::capacity()
 template<class T, class K>
 int Table<T, K>::hash(K key, int i)
 {
-    int index = (h1(key) + i*(h2(key) + 1)) % size();
+    int index = (h1(key) + i * (h2(key) + 1)) % size();
     if (i == size())
         return -1;
     if (myTable[index] == NULL)
@@ -67,14 +69,12 @@ template<class T, class K>
 int Table<T, K>::search(K key)
 {
     int index = hash(key, 0);
-    if (myTable[index].falg == deleted) 
+    if (myTable[index] == NULL)
     {
-        std::count << "this item is deleted\n";
         return -1;
     }
-    if (myTable[index].falg == empty)
+    if (myTable[index].flag == deleted)
     {
-        std::count << "this item is empty\n";
         return -1;
     }
     return index;
@@ -107,7 +107,7 @@ template<class T, class K>
 void Table<T, K>::update(T data, K key)
 {
     int i = search(key);
-    if(i != -1)
+    if (i != -1)
     {
         myTable[i].data = data;
     }
@@ -116,21 +116,24 @@ void Table<T, K>::update(T data, K key)
 template<class T, class K>
 void Table<T, K>::print()
 {
-
+    for (int i = 0; i < size(); i++) {
+        if (myTable[i] != NULL)
+        {
+            std::cout << "key = " << myTable[i]->key << " value = " << myTable[i]->data << "\n";
+        }
+    }
 }
-
-
 
 bool isPrime(int num)
 {
-	// Corner case 
-	if (num <= 1)
-		return false;
+    // Corner case 
+    if (num <= 1)
+        return false;
 
-	// Check from 2 to n-1 
-	for (int i = 2; i < num; i++)
-		if (num % i == 0)
-			return false;
+    // Check from 2 to n-1 
+    for (int i = 2; i < num; i++)
+        if (num % i == 0)
+            return false;
 
-	return true;
+    return true;
 }
