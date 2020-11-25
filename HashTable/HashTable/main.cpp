@@ -44,13 +44,13 @@ int main()
 	//	default: cout << "ERROR\n";  break;
 	//	}
 	//} while (ch != 'e');
-	Table<string, int> t(1000);
-	string s = "noam"; int k = 54;
-	t.insert(s, k);
-	Table<list<string>, string> t2(1000);
-	list<string> l = { "noam", "shmuel", "shushan" };
-	string s2 = "names";
-	t2.insert(l, s2);
+	//Table<string, int> t(1000);
+	//string s = "noam"; int k = 54;
+	//t.insert(s, k);
+	//Table<list<string>, string> t2(1000);
+	//list<string> l = { "noam", "shmuel", "shushan" };
+	//string s2 = "names";
+	//t2.insert(l, s2);
 
 
 	return 0;

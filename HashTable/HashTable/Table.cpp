@@ -47,6 +47,8 @@ template<class T, class K>
 int Table<T, K>::hash(K key, int i)
 {
     int index = h1(key) + i * h2(key);
+    if (i == getSize())
+        return -1;
     if (myTable[index].flag == full)
         index = hash(key, i + 1);
     return index;
@@ -73,14 +75,41 @@ template<class T, class K>
 inline void Table<T, K>::insert(T& data, K& key)
 {
     int i = hash(key);
-
-    myTable[] = new Item(data, key, full);
+    if (i == -1)
+    {
+        std::count << "Erorr: the table is full\n";
+        return;
+    }
+    myTable[i] = new Item(data, key, full);
 }
 
 template<class T, class K>
 inline void Table<T, K>::remove(T& data, K& key)
 {
-    
+    int i = hash(key);
+    if (i == -1)
+    {
+        std::count << "Erorr: can not find the item\n";
+        return;
+    }
+    myTable[i].flag = deleted;
+}
+
+template<class T, class K>
+void Table<T, K>::update(T data, K key)
+{
+    int i = find(key);
+    if(i != -1)
+    {
+        myTable[i].data = new T(data);
+    }
+
+}
+
+template<class T, class K>
+void Table<T, K>::print()
+{
+
 }
 
 
