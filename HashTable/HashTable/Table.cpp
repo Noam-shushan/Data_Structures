@@ -7,42 +7,40 @@
 /// <typeparam name="K"></typeparam>
 /// <param name="newSize"></param>
 template<class T, class K>
-Table<T, K>::Table(int newSize)
+inline Table<T, K>::Table(int newSize)
 {
-    _size = getPrimeSize(newSize);
-	myTable.assign(size(), NULL) ;
+    size = getPrimeSize(newSize);
+	myTable = new Item[size];
 }
 
 template<class T, class K>
 Table<T, K>::~Table()
 {
-    for (int i = 0; i < size(); i++)
-    {
-        if(myTable[i] != NULL)
-            delete myTable[i];
-    }
+    for (int i = 0; i < getSize(); i++)
+        delete myTable[i];
+    delete[] myTable;
 }
 
 template<class T, class K>
 int Table<T, K>::getPrimeSize(int newSize)
 {
-    if (isPrime(newSize))
-        return newSize;
-    for (int up = newSize + 1, down = newSize - 1; down > 2; up++, down--)
-    {
-        if (isPrime(up)) {
-            return up;
-        }
-        else if (isPrime(down)) {
-            return down;
-        }
-    }
+	if (isPrime(newSize))
+		return newSize;
+	for (int up = newSize + 1, down = newSize - 1; down > 2; up++, down--)
+	{
+		if (isPrime(up)) {
+			return up;
+		}
+		else if (isPrime(down)) {
+			return down;
+		}
+	}
 }
 
 template<class T, class K>
 int Table<T, K>::size()
 {
-    return _size;
+    return size;
 }
 
 template<class T, class K>
@@ -64,17 +62,19 @@ int Table<T, K>::hash(K key, int i)
         index = hash(key, i + 1);
     return index;
 }
- 
+
 template<class T, class K>
 int Table<T, K>::search(K key)
 {
     int index = hash(key, 0);
-    if (myTable[index] == NULL)
+    if (myTable[index].falg == deleted) 
     {
+        std::count << "this item is deleted\n";
         return -1;
     }
-    if (myTable[index].flag == deleted)
+    if (myTable[index].falg == empty)
     {
+        std::count << "this item is empty\n";
         return -1;
     }
     return index;
@@ -116,24 +116,21 @@ void Table<T, K>::update(T data, K key)
 template<class T, class K>
 void Table<T, K>::print()
 {
-    for (int i = 0; i < size(); i++) {
-        if (myTable[i] != NULL)
-        {
-            std::cout << "key = "<< myTable[i]->key << " value = " << myTable[i]->data <<"\n";
-        }
-    }
+
 }
+
+
 
 bool isPrime(int num)
 {
-    // Corner case 
-    if (num <= 1)
-        return false;
+	// Corner case 
+	if (num <= 1)
+		return false;
 
-    // Check from 2 to n-1 
-    for (int i = 2; i < num; i++)
-        if (num % i == 0)
-            return false;
+	// Check from 2 to n-1 
+	for (int i = 2; i < num; i++)
+		if (num % i == 0)
+			return false;
 
-    return true;
+	return true;
 }
