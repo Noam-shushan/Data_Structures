@@ -109,37 +109,30 @@ void Table<T, K>::update(T data, K key)
 template<class T, class K>
 void Table<T, K>::print()
 {
-	int index = search(key);
-	if (index == -1)
-	{
-		return;
-	}
-	else
-	{
-		myTable[index].flag=deleted;  //even though the value is still here the next insert will overwrite it
-	}
+	
+	
 }
 
 template<class T, class K>
-void Table<T, K>::update(K key)
-{
-
-}
-
-template<class T, class K>
-void Table<T, K>::print()
-{
-	for (int i = 0; i < size; i++)
-	{
-		if (myTable[i] == NULL)
-			continue;
-		/*for each (object var in collection_to_loop)
-		{
-
-		}*/
-		cout << myTable[i] << endl; //maybe should pass on the list?
-	}
-}
+//void Table<T, K>::update(K key)
+//{
+//
+//}
+//
+//template<class T, class K>
+//void Table<T, K>::print()
+//{
+//	for (int i = 0; i < size; i++)
+//	{
+//		if (myTable[i] == NULL)
+//			continue;
+//		/*for each (object var in collection_to_loop)
+//		{
+//
+//		}*/
+//		cout << myTable[i] << endl; //maybe should pass on the list?
+//	}
+//}
 
 
 
