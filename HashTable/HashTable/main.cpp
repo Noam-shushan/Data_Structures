@@ -51,7 +51,8 @@ int main()
 	//list<string> l = { "noam", "shmuel", "shushan" };
 	//string s2 = "names";
 	//t2.insert(l, s2);
-
+	Table<string, int> t(13);
+	t.insert("noam", 78);
 
 	return 0;
 }

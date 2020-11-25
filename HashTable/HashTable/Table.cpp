@@ -7,22 +7,24 @@
 /// <typeparam name="K"></typeparam>
 /// <param name="newSize"></param>
 template<class T, class K>
-inline Table<T, K>::Table(int newSize)
+Table<T, K>::Table(int newSize)
 {
-    size = getPrimeSize(newSize);
-	myTable = new Item[size];
+    _size = getPrimeSize(newSize);
+	myTable.assign(size(), NULL) ;
 }
 
 template<class T, class K>
 Table<T, K>::~Table()
 {
-    for (int i = 0; i < getSize(); i++)
-        delete myTable[i];
-    delete[] myTable;
+    for (int i = 0; i < size(); i++)
+    {
+        if(myTable[i] != NULL)
+            delete myTable[i];
+    }
 }
 
 template<class T, class K>
-inline int Table<T, K>::getPrimeSize(int newSize)
+int Table<T, K>::getPrimeSize(int newSize)
 {
     if (isPrime(newSize))
         return newSize;
@@ -38,58 +40,64 @@ inline int Table<T, K>::getPrimeSize(int newSize)
 }
 
 template<class T, class K>
-int Table<T, K>::getSize()
+int Table<T, K>::size()
 {
-    return size;
+    return _size;
 }
+
+template<class T, class K>
+int Table<T, K>::capacity()
+{
+    return _capacity;
+}
+
 
 template<class T, class K>
 int Table<T, K>::hash(K key, int i)
 {
-    int index = h1(key) + i * h2(key);
-    if (i == getSize())
+    int index = (h1(key) + i*(h2(key) + 1)) % size();
+    if (i == size())
         return -1;
+    if (myTable[index] == NULL)
+        return index;
     if (myTable[index].flag == full)
         index = hash(key, i + 1);
     return index;
 }
  
 template<class T, class K>
-inline int Table<T, K>::search(K key)
+int Table<T, K>::search(K key)
 {
     int index = hash(key, 0);
-    if (myTable[index].falg == deleted) 
+    if (myTable[index] == NULL)
     {
-        std::count << "this item is deleted\n";
         return -1;
     }
-    if (myTable[index].falg == empty)
+    if (myTable[index].flag == deleted)
     {
-        std::count << "this item is empty\n";
         return -1;
     }
     return index;
 }
 
 template<class T, class K>
-inline void Table<T, K>::insert(T& data, K& key)
+void Table<T, K>::insert(T data, K key)
 {
-    int i = hash(key);
+    int i = hash(key, 0);
     if (i == -1)
     {
-        std::count << "Erorr: the table is full\n";
         return;
     }
     myTable[i] = new Item(data, key, full);
+    _capacity++;
 }
 
 template<class T, class K>
-inline void Table<T, K>::remove(T& data, K& key)
+void Table<T, K>::remove(K key)
 {
-    int i = hash(key);
+    int i = search(key);
     if (i == -1)
     {
-        std::count << "Erorr: can not find the item\n";
         return;
     }
     myTable[i].flag = deleted;
@@ -98,21 +106,23 @@ inline void Table<T, K>::remove(T& data, K& key)
 template<class T, class K>
 void Table<T, K>::update(T data, K key)
 {
-    int i = find(key);
+    int i = search(key);
     if(i != -1)
     {
-        myTable[i].data = new T(data);
+        myTable[i].data = data;
     }
-
 }
 
 template<class T, class K>
 void Table<T, K>::print()
 {
-
+    for (int i = 0; i < size(); i++) {
+        if (myTable[i] != NULL)
+        {
+            std::cout << "key = "<< myTable[i]->key << " value = " << myTable[i]->data <<"\n";
+        }
+    }
 }
-
-
 
 bool isPrime(int num)
 {
