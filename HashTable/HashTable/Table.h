@@ -32,7 +32,7 @@ public:
 	int search(K key);
 	void insert(T& data, K& key);
 	void remove(T& data, K& key);
-	void update(K key);
+	void update(T data, K key);
 	void print();
 };
 
