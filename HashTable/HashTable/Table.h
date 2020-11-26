@@ -6,15 +6,15 @@ template <typename T, typename K>
 class Table
 {
 protected:
-	enum state { full, deleted };
+	enum state { FULL, DELETED };
 	class Item
 	{
 	public:
 		T data;
 		K key;
-		state flag;
+		state FLAG;
 		Item() {}
-		Item(T& d, K& k, state& f) : data(d), key(k), flag(f) { }
+		Item(T& d, K& k, state& f) : data(d), key(k), FLAG(f) { }
 	};
 
 private:
@@ -28,8 +28,8 @@ public:
 	int size();
 	int capacity();
 	int getPrimeSize(int newSize);
-	virtual int h1(K key) {}
-	virtual int h2(K key) {}
+	virtual int h1(K key) = 0;
+	virtual int h2(K key) = 0;
 	int hash(K key, int i);
 	int search(K key);
 	void insert(T data, K key);

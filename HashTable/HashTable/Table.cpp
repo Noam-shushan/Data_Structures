@@ -61,7 +61,7 @@ int Table<T, K>::hash(K key, int i)
         return -1;
     if (myTable[index] == NULL)
         return index;
-    if (myTable[index].flag == full)
+    if (myTable[index].FLAG == FULL)
         index = hash(key, i + 1);
     return index;
 }
@@ -74,7 +74,7 @@ int Table<T, K>::search(K key)
     {
         return -1;
     }
-    if (myTable[index].flag == deleted)
+    if (myTable[index].FLAG == DELETED)
     {
         return -1;
     }
@@ -89,7 +89,7 @@ void Table<T, K>::insert(T data, K key)
     {
         return;
     }
-    myTable[i] = new Item(data, key, full);
+    myTable[i] = new Item(data, key, FULL);
     _capacity++;
 }
 
@@ -101,7 +101,7 @@ void Table<T, K>::remove(K key)
     {
         return;
     }
-    myTable[i].flag = deleted;
+    myTable[i].FLAG == DELETED;
 }
 
 template<typename T, typename K>
@@ -121,7 +121,7 @@ void Table<T, K>::print()
 {
     for (int i = 0; i < size(); i++) 
     {
-        if (myTable[i] != NULL && myTable[i].flag != deleted)
+        if (myTable[i] != NULL && myTable[i].FLAG != DELETED)
         {
             std::cout << myTable[i] << "\n";
         }
