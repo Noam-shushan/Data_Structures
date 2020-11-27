@@ -22,6 +22,7 @@ int main()
 	cout << "e: Exit" << endl;
 	do
 	{
+		cout << "-> ";
 		cin >> ch;
 		switch (ch)
 		{

@@ -1,20 +1,24 @@
 #pragma once
 #include "Table.h"
 #include <list>
+#include <sstream>
 
 class HSubject :
-    public Table<std::list<std::string>*, std::string>
+    public Table<list<string>, string>
 {
 public:
-    HSubject(int newSize);
+    HSubject(int n);
     ~HSubject();
-    void startNewTable() {}
-    friend std::ostream& operator<<(std::ostream& output,
-         Table<std::list<std::string>*, std::string>::Item*);
-    int h1(std::string key);
-    int h2(std::string key);
-    void printS(std::string subject);
-    void printN(std::string subject, int N);
-    void addSubjectAndTitle(std::string subject, std::string title);
+    void startNewTable();
+    void addSubjectAndTitle(string subject, string title);
+    void printS(string subject);
+    void printN(string subject, int N);
+    virtual int h1(string key);
+    virtual int h2(string key);
+    virtual string show();
+    friend ostream& operator<<(ostream& output, HSubject& h)
+    {
+        return (output << h.show());
+    }
 };
 
