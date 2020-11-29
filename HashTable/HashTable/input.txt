@@ -1,0 +1,13 @@
+a
+s1 t1
+a
+s2 t2
+a
+s2 t21
+a
+s2 t22
+a
+s1 t2
+a
+s1 t3
+e

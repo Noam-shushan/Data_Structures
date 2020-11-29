@@ -26,7 +26,6 @@ int main()
 		cin >> ch;
 		switch (ch)
 		{
-
 		case 'n':hs.startNewTable(); break;
 		case 'a':cout << "Enter a subject and a title\n";
 			cin >> subject >> title;
@@ -38,7 +37,7 @@ int main()
 		case 't':cout << "enter subject to print\n";
 			cin >> subject;
 			hs.printS(subject); break;
-		case 's':cout << "enter a subject and N\n"; cin >> subject >> n;
+		case 's':cout << "enter a subject and N\n"; cin >> subject; cin >> n;
 			hs.printN(subject, n); break;
 		case 'e':cout << "bye\n"; break;
 		case 'p':hs.print(); break;

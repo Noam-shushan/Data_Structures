@@ -4,19 +4,19 @@
 #include <sstream>
 
 class HSubject :
-    public Table<list<string>, string>
+    public Table<std::list<std::string>, std::string>
 {
 public:
     HSubject(int n);
     ~HSubject();
     void startNewTable();
-    void addSubjectAndTitle(string subject, string title);
-    void printS(string subject);
-    void printN(string subject, int N);
-    virtual int h1(string key);
-    virtual int h2(string key);
-    virtual string show();
-    friend ostream& operator<<(ostream& output, HSubject& h)
+    void addSubjectAndTitle(std::string subject, std::string title);
+    void printS(std::string subject);
+    void printN(std::string subject, int N);
+    virtual int h1(std::string key);
+    virtual int h2(std::string key);
+    virtual std::string show();
+    friend std::ostream& operator<<(std::ostream& output, HSubject& h)
     {
         return (output << h.show());
     }

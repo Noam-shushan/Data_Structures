@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-using namespace std;
+
 
 template<class T, class K>
 class Table {
@@ -45,10 +45,13 @@ public:
     int hash(K key, int i = 0)
     {
         int index = (h1(key) + i * (h2(key) + 1)) % size();
+        
         if (i == size())
             return -1;
+        
         if (myTable[i] != NULL)
             index = hash(key, i + 1);
+        
         return index;
     }
 
@@ -70,7 +73,7 @@ public:
         int index = hash(k, 0);
         if (index == -1)
         {
-            throw "table is full";
+            std::cout << "table is full\n";
             return;
         }
         myTable[index] = temp;
@@ -90,13 +93,13 @@ public:
             myTable[i]->data = data;
     }
 
-    virtual string show()
+    virtual std::string show()
     {
         return "";
     }
 
     void print() {
-        cout << this->show();
+        std::cout << this->show();
     }
 
     int getPrimeSize(int newSize)

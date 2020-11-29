@@ -25,33 +25,42 @@ void HSubject::addSubjectAndTitle(std::string subject, std::string title)
 	insert(myList, subject);
 }
 
-void HSubject::printS(string subject)
+void HSubject::printS(std::string subject)
 {
 	int index = search(subject);
+
 	if (index == -1)
+	{
+		std::cout << "ERROR\n";
 		return;
+	}
 
 	for (std::list<std::string>::iterator iter = myTable[index]->data.begin();
 		iter != myTable[index]->data.end(); iter++)
 	{
-		std::cout << *iter << "\n";
+		std::cout << *iter << " ";
 	}
+	std::cout << "\n";
 }
 
-void HSubject::printN(string subject, int N)
+void HSubject::printN(std::string subject, int N)
 {
 	int index = search(subject);
 	if (index == -1)
+	{
+		std::cout << "ERROR\n";
 		return;
+	}
 	int i = 0;
 	for (std::list<std::string>::iterator iter = myTable[index]->data.begin();
 		iter != myTable[index]->data.end() && i < N; iter++, i++)
 	{
-		std::cout << *iter << "\n";
+		std::cout << *iter << " ";
 	}
+	std::cout << "\n";
 }
 
-int HSubject::h1(string key)
+int HSubject::h1(std::string key)
 {
 	int result = 0;
 	for (std::string::size_type i = 0; i < key.size(); i++) {
@@ -60,7 +69,7 @@ int HSubject::h1(string key)
 	return result % size();
 }
 
-int HSubject::h2(string key)
+int HSubject::h2(std::string key)
 {
 	int result = 5381;
 
@@ -70,23 +79,24 @@ int HSubject::h2(string key)
 	return result;
 }
 
-string HSubject::show()
+std::string HSubject::show()
 {
-	stringstream out;
+	std::stringstream out;
 	for (int i = 0; i < size(); i++)
 	{
-		if (myTable[i] != NULL) {
-			out << "key: " << myTable[i]->key << "\ndata: ";
-			list<string>::iterator it = myTable[i]->data.begin();
-			list<string>::iterator temp;
-			for (; it != myTable[i]->data.end(); it++)
+		if (myTable[i] != NULL && myTable[i]->flag != DELETED) 
+		{
+			out << myTable[i]->key << ": ";
+			std::list<std::string>::iterator iter = myTable[i]->data.begin();
+			std::list<std::string>::iterator temp;
+			for (; iter != myTable[i]->data.end(); iter++)
 			{
-				out << *it;
-				temp = it;
+				out << *iter;
+				temp = iter;
 				if ((++temp) != myTable[i]->data.end())
 					out << ", ";
 			}
-			out << "\n\n";
+			out << "\n";
 		}
 	}
 	return out.str();
