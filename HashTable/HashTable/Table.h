@@ -29,7 +29,7 @@ private:
 public:
     Item** myTable; // the table
     /// <summary>
-    /// constractor
+    /// constructor
     /// </summary>
     /// <param name="n">size of the table</param>
     Table(int n) {
@@ -39,7 +39,7 @@ public:
             myTable[i] = NULL; // Initializes the table
     }
     /// <summary>
-    /// distractor
+    /// destructor
     /// </summary>
     ~Table() {
         for (int i = 0; i < size(); i++)

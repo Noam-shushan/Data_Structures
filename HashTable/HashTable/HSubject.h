@@ -12,7 +12,6 @@ class HSubject :
 {
 public:
     HSubject(int n);
-    ~HSubject();
     void startNewTable();
     void addSubjectAndTitle(std::string subject, std::string title);
     void printS(std::string subject);

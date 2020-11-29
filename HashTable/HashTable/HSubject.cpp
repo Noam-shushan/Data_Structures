@@ -1,15 +1,9 @@
 #include "HSubject.h"
 /// <summary>
-/// constractor
+/// constructor
 /// </summary>
 /// <param name="n"></param>
 HSubject::HSubject(int n) : Table(n)
-{
-}
-/// <summary>
-/// distractor
-/// </summary>
-HSubject::~HSubject()
 {
 }
 

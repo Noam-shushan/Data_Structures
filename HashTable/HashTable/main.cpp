@@ -1,10 +1,12 @@
 #include <iostream>
 #include <string>
 #include "HSubject.h"
+using namespace std;
+
 ///authors:
 /// noam shushan 314717588
 /// shmuel verse 1666859 
-using namespace std;
+
 
 int main()
 {
