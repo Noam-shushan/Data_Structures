@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 #include "HSubject.h"
-
+///authors:
+/// noam shushan 314717588
+/// shmuel verse 1666859 
 using namespace std;
 
 int main()
@@ -17,12 +19,11 @@ int main()
 	cout << "a: Add a subject and a title" << endl;
 	cout << "d: Del a subject " << endl;
 	cout << "t: print all titles of the subject " << endl;
-	cout << "s: print N first appearances of a subject " << endl;
+	cout << "s: print N first appearances of a subect " << endl;
 	cout << "p: print all non-empty entries " << endl;
 	cout << "e: Exit" << endl;
 	do
 	{
-		cout << "-> ";
 		cin >> ch;
 		switch (ch)
 		{

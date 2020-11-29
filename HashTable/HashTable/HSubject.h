@@ -2,7 +2,11 @@
 #include "Table.h"
 #include <list>
 #include <sstream>
-
+/// <summary>
+/// implument the gennric hash table 
+/// the key is a string 
+/// the data is a list of strings
+/// </summary>
 class HSubject :
     public Table<std::list<std::string>, std::string>
 {
