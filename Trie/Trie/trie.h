@@ -3,20 +3,33 @@
 #include <iostream>
 
 class Trie{
-	static const int ALEPHBET = 26;
+	
+	static const int ALEPHBET_SIZE = 26;
+
 protected:
 	class TrieNode {
 	public:
-		TrieNode* Children[ALEPHBET] = { 0 };
+		TrieNode* Children[ALEPHBET_SIZE] = { 0 };
 		TrieNode* Father;
-		bool IsEndWord = false;
+		bool IsEndOfWord = false;
 
 		TrieNode() {};
+		~TrieNode()
+		{
+			for (int i = 0; i < ALEPHBET_SIZE; i++)
+			{
+				if (Children[i] != NULL)
+					delete Children[i];
+			}
+		}
 	};
 
+private:
 	TrieNode* root;
-public:
-	
+	int getIndexLetter(char letter);
+	TrieNode* getEndOfWord(std::string word);
+	bool isLeaf(TrieNode* node);
+public:	
 	Trie();
 	~Trie();
 
