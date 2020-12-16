@@ -5,7 +5,6 @@
 Trie::Trie()
 {
 	root = new TrieNode();
-	root->Father = NULL;
 }
 /// <summary>
 /// disctrutor
@@ -83,16 +82,39 @@ bool Trie::search(std::string word)
 	}
 	return (ptr != NULL && ptr->IsEndOfWord);
 }
-
-int Trie::printAutoSuggestions(std::string word)
+/// <summary>
+/// print auto suggestions of a given prefix
+/// </summary>
+/// <param name="prefix">the given prefix we wont to complte with all existing words in the Trie</param>
+/// <returns>0 if no string exist with this prefix or the number of words that bigen with this prefix</returns>
+int Trie::printAutoSuggestions(std::string prefix)
 {
-	//std::list<std::string> allSuggestion;
-	//TrieNode* ptr = root;
-	//for (int i = 0; i < ALEPHBET_SIZE; i++)
-	//{
+	TrieNode* end = getEndOfWord(prefix, true); // get the node of the last letter of the word in the Trie
+	if(!end) // word dont exsist
+		return 0;
+	return printAutoSuggestions(end, prefix);
+}
 
-	//}
-	return 0;
+int Trie::printAutoSuggestions(TrieNode* node, std::string result)
+{
+	int count = 0;
+	if (node->IsEndOfWord) // if this is the end print the result
+	{
+		std::cout << result << "\n";
+		count += 1;
+	}
+	if (node->IsLeaf)
+		return count;
+	for (int i = 0; i < ALEPHBET_SIZE; i++)
+	{
+		if (node->Children[i])
+		{
+			result += intToAlphabet(i); // append the letter to the outpot
+			count += printAutoSuggestions(node->Children[i], result); // call in recurtion to the next letter
+			result = result.substr(0, result.size() - 1); // get rid of the leftovers from the last call
+		}
+	}
+	return count;
 }
 
 int Trie::getIndexLetter(char letter)
@@ -104,23 +126,30 @@ char Trie::intToAlphabet(int i)
 {
 	return static_cast<char>('a' + i);
 }
-
-Trie::TrieNode* Trie::getEndOfWord(std::string word)
+/// <summary>
+/// get the node of the last letter in the word
+/// </summary>
+/// <param name="word">the given word</param>
+/// <param name="getPrefix">flag that detemant if we wont a word from the Trie of some prefix</param>
+/// <returns>the node of the last letter</returns>
+Trie::TrieNode* Trie::getEndOfWord(std::string word, bool getPrefix)
 {
 	TrieNode* ptr = root;
 	for (std::string::size_type i = 0; i < word.length(); i++)
 	{
 		int index = getIndexLetter(word[i]);
 		if (!ptr->Children[index])
-			return NULL;
+			return NULL; // word dont exist in the Trie
 		ptr = ptr->Children[index];
 	}
-	if (ptr != NULL && ptr->IsEndOfWord)
+	if (getPrefix && ptr)
+		return ptr;
+	if (ptr && ptr->IsEndOfWord)
 		return ptr;
 	
 	return NULL;
 }
-
+// check if the node have children
 bool Trie::isLeaf(TrieNode* node)
 {
 	for (int i = 0; i < ALEPHBET_SIZE; i++) 
@@ -145,5 +174,6 @@ void Trie::delMem(TrieNode* node)
 		}
 	}
 }
+
 
 
