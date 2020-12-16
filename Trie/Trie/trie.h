@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <list>
 
 class Trie{
 	
@@ -12,30 +13,23 @@ protected:
 		TrieNode* Children[ALEPHBET_SIZE] = { 0 };
 		TrieNode* Father;
 		bool IsEndOfWord = false;
-
+		int Index = 0;
+		bool IsLeaf = true;
 		TrieNode() {};
-		~TrieNode()
-		{
-			for (int i = 0; i < ALEPHBET_SIZE; i++)
-			{
-				if (Children[i] != NULL)
-					delete Children[i];
-			}
-		}
 	};
 
 private:
 	TrieNode* root;
 	int getIndexLetter(char letter);
+	char intToAlphabet(int i);
 	TrieNode* getEndOfWord(std::string word);
 	bool isLeaf(TrieNode* node);
+	void delMem(TrieNode* node);
 public:	
 	Trie();
 	~Trie();
-
 	void insert(std::string newWord);
 	bool del(std::string wordToDel);
 	bool search(std::string word);
 	int printAutoSuggestions(std::string word);
-
 };

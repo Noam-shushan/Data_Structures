@@ -1,7 +1,8 @@
 #include<iostream>
-using namespace std;
 #include <string>
 #include "trie.h"
+
+using namespace std;
 
 int main()
 {
@@ -10,9 +11,14 @@ int main()
 					 "by", "bye", "their" };
 	for (int i = 0; i < 8; i++)
 		tr.insert(keys[i]);
-	if (tr.search("the"))
-		cout << "found\n";
 
+	if (tr.search("there"))
+		cout << "found\n";
+	tr.del("there");
+	if (tr.search("there"))
+		cout << "found\n";
+	else
+		cout << "not found\n";
 	//char ch;
 	//string wrd;
 	//Trie tr;
