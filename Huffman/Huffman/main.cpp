@@ -1,20 +1,43 @@
-// Huffman.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include<queue>
 #include <iostream>
-#include "Huffman.h"
+#include <queue>
+#include <list>
+#include <string>
+#include <cmath>
+#include "huffman.h"
+using namespace std;
 
 int main()
 {
+	int choice;
+	//Huffman
+	HuffmanTree* t = new HuffmanTree();
+	cout << "enter 1 to encode a text\n";
+	cout << "enter 2 to decode a text\n";
+	cout << "enter 3 to exit\n";
+
+	do
+	{
+		string word;
+		cout << "press 1 to encode or 2 to decode" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			cout << "enter the original text" << endl;
+			cin >> word;
+
+			//Build Huffman tree given the data inside "word".
+			//Then find the code of each letter.
+			//Then print the output - number of leaves, order of letters, tree structure and the encoded text - according to the explanation in the exercise.
+
+			break;
+		case 2:
+			//input the number of leaves, the  order of letters, tree structure and the encoded text.
+			//build the Huffman Tree according to the tree strcture. put the letters in the leaves according to the given order. 
+			//Given the Huffman Tree and the encoded text, find the original text, and print it. 
+
+		}
+
+	} while (choice != 3);
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
