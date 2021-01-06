@@ -1,12 +1,7 @@
 #include "Huffman.h"
-#include<cstring>
-#include <unordered_map>
-#include <sstream>
-using namespace std;
 
 Huffman::Huffman()
 {
-
 }
 
 Huffman::~Huffman()
@@ -15,6 +10,15 @@ Huffman::~Huffman()
 
 void Huffman::decode(std::string word)
 {
+	//std::string freqTable = countCharWithFreq(word);
+	//int numOfChar = countDifferentChar(word);
+	//for (std::string::size_type j = 0; j < freqTable.size(); j++) 
+	//{
+	//	if (freqTable[j] != ' ') 
+	//	{
+	//		HuffmanNode* newNode = new HuffmanNode(fraq[])
+	//	}
+	//}
 }
 
 void Huffman::encod()
@@ -22,20 +26,21 @@ void Huffman::encod()
 }
 
 
-int countdifCarac(string s)
+int Huffman::countDifferentChar(std::string str)
 {
 
-	unordered_map<char, int> m;
+	std::unordered_map<char, int> map;
 
-	for (int i = 0; i < s.length(); i++) {
-		m[s[i]]++;
+	for (std::string::size_type i = 0; i < str.length(); i++) 
+	{
+		map[str[i]]++;
 	}
 
-	return m.size();
+	return map.size();
 }
-string countCharWithFreq(string str)
+std::string Huffman::countCharWithFreq(std::string str)
 {
-	string finalone;
+	std::string finalone;
 	// size of the string 'str'
 	int n = str.size();
 
