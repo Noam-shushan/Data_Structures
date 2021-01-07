@@ -2,6 +2,7 @@
 
 Huffman::Huffman(std::string word)
 {
+	_word = word;
 	std::string freqTable = countCharWithFreq(word);
 	for (std::string::size_type i = 0; i < freqTable.size(); i++) 
 	{
@@ -22,11 +23,10 @@ Huffman::Huffman(std::string word)
 		tree.pop();
 		HuffmanNode* min2 = tree.top();
 		tree.pop();
-		HuffmanNode* ptr = new HuffmanNode(0, 0);
-		ptr->frequency = min1->frequency + min2->frequency;
-		ptr->isLeaf = false;
+		HuffmanNode* ptr = new HuffmanNode(min1->frequency + min2->frequency, 0, false);
 		ptr->right = min2;
 		ptr->left = min1;
+		min1->father = min2->father = ptr;
 		tree.push(ptr);
 	}
 	root = tree.top();
@@ -41,19 +41,74 @@ Huffman::~Huffman()
 	delMem(root);
 }
 
-void Huffman::decode()
-{
-
-}
-
-void Huffman::encod(std::string word)
+std::string Huffman::encod()
 {
 	std::stringstream out;
-	std::string freqTable = countCharWithFreq(word);
-	out << countDifferentChar(word) 
-		<< "\n" << letters << 
-		"\n" << treeStruct << "\n";
+	std::string freqTable = countCharWithFreq(_word);
+	out << countDifferentChar(_word) << "\n"
+		<< _letters << "\n"
+		<< _treeStruct << "\n"
+		<< _code << "\n";
+	return out.str();
+}
 
+std::string Huffman::decode(int numOfDif, std::string difLetters,
+	std::string wordStruct, std::string code)
+{
+	HuffmanNode* tempRoot = new HuffmanNode(0, 0, false);
+	bulidTreeFromStruct(tempRoot, wordStruct, 0);
+	setNodeCode(tempRoot, "");
+	setLetters(tempRoot, difLetters, 0);
+	
+	std::stringstream out;
+	for(int i = 1; i < numOfDif; i++) 
+	{
+		for (int j = 0; j < code.size() - numOfDif; j++)
+		{
+			std::string sub = code.substr(j, i);
+			char res = 0;
+			if (getLetter(tempRoot, sub, &res))
+				out << res;
+		}
+	}
+	
+	delMem(tempRoot);
+	
+	return out.str();
+}
+
+int _count = 0;
+void Huffman::setLetters(HuffmanNode* node, std::string difLetters, int ind)
+{
+	if (ind == difLetters.size())
+		return;
+	
+	if (node->isLeaf) 
+	{
+		node->str = difLetters[ind];
+		_count++;
+		return;
+	}
+	setLetters(node->left, difLetters, _count);
+	setLetters(node->right, difLetters, _count);
+}
+
+void Huffman::bulidTreeFromStruct(HuffmanNode* node, std::string wordStruct, int ind)
+{
+	if (ind >= wordStruct.size())
+		return;
+	if (wordStruct[ind] == '0') 
+	{
+		node->left = new HuffmanNode(0, 0, false);
+		node->right = new HuffmanNode(0, 0, false);
+		bulidTreeFromStruct(node->left, wordStruct, ind + 1);
+	}
+	if (wordStruct[ind] == '1') 
+	{
+		node->isLeaf = true;
+		return;
+	}
+	bulidTreeFromStruct(node->right, wordStruct, ind + 2);
 }
 
 void Huffman::setNodeCode(HuffmanNode* node, std::string nodeCode)
@@ -68,27 +123,46 @@ void Huffman::setNodeCode(HuffmanNode* node, std::string nodeCode)
 	setNodeCode(node->right, nodeCode + "1");
 }
 
-std::string Huffman::getCode(HuffmanNode* node, char letter)
+void Huffman::getCode(HuffmanNode* node, char letter, std::string* res)
 {	
-	if (node->left)
-		return getCode(node->left, letter);
-	
-	if (node->right)
-		return getCode(node->right, letter);
-	
-	if (node->isLeaf) 
+	if (node->isLeaf)
 	{
 		if (node->str == letter)
-			return node->code;
+		{
+			*res = node->code;
+			return;
+		}
+		return;
 	}
-	return "";
+	if (node->left)
+		getCode(node->left, letter, res);
+	
+	if (node->right)
+		getCode(node->right, letter, res);
+}
+
+bool Huffman::getLetter(HuffmanNode* node, std::string nodeCode, char* res)
+{
+	if (node->isLeaf)
+	{
+		if (node->code == nodeCode)
+		{
+			*res = node->str;
+			return true;
+		}
+		return false;
+	}
+	return getLetter(node->left, nodeCode, res) 
+		|| getLetter(node->right, nodeCode, res);
 }
 
 void Huffman::setCode(std::string word)
 {
 	for(int i = 0; i < word.size(); i++)
 	{
-		code += getCode(root, word[i]);
+		std::string res = "";
+		getCode(root, word[i], &res);
+		_code += res;
 	}
 }
 
@@ -96,13 +170,13 @@ void Huffman::setTreeStruct(HuffmanNode* node)
 {
 	if (node->isLeaf) 
 	{
-		treeStruct += "1";
-		letters += node->str;
+		_treeStruct += "1";
+		_letters += node->str;
 		return;
 	}
 	else 
 	{
-		treeStruct += "0";
+		_treeStruct += "0";
 		setTreeStruct(node->left);
 	}
 	setTreeStruct(node->right);
