@@ -7,7 +7,8 @@ int main()
 	int choice;
 	//Huffman
 	Huffman t("aaabaaac");
-	std::cout << t.treeStruct << "\n" << t.letters << "\n";
+
+	std::cout << t.treeStruct << "\n" << t.letters << "\n" << t.code << "\n";
 	//cout << "enter 1 to encode a text\n";
 	//cout << "enter 2 to decode a text\n";
 	//cout << "enter 3 to exit\n";

@@ -32,6 +32,8 @@ Huffman::Huffman(std::string word)
 	root = tree.top();
 	tree.pop();
 	setTreeStruct(root);
+	setNodeCode(root, "");
+	setCode(word);
 }
 
 Huffman::~Huffman()
@@ -48,8 +50,46 @@ void Huffman::encod(std::string word)
 {
 	std::stringstream out;
 	std::string freqTable = countCharWithFreq(word);
-	out << countDifferentChar(word) << "\n" << letters << "\n";
+	out << countDifferentChar(word) 
+		<< "\n" << letters << 
+		"\n" << treeStruct << "\n";
 
+}
+
+void Huffman::setNodeCode(HuffmanNode* node, std::string nodeCode)
+{
+	if (!node)
+		return;
+	
+	if (node->isLeaf) 
+		node->code = nodeCode;
+	
+	setNodeCode(node->left, nodeCode + "0");
+	setNodeCode(node->right, nodeCode + "1");
+}
+
+std::string Huffman::getCode(HuffmanNode* node, char letter)
+{	
+	if (node->left)
+		return getCode(node->left, letter);
+	
+	if (node->right)
+		return getCode(node->right, letter);
+	
+	if (node->isLeaf) 
+	{
+		if (node->str == letter)
+			return node->code;
+	}
+	return "";
+}
+
+void Huffman::setCode(std::string word)
+{
+	for(int i = 0; i < word.size(); i++)
+	{
+		code += getCode(root, word[i]);
+	}
 }
 
 void Huffman::setTreeStruct(HuffmanNode* node)
@@ -57,6 +97,7 @@ void Huffman::setTreeStruct(HuffmanNode* node)
 	if (node->isLeaf) 
 	{
 		treeStruct += "1";
+		letters += node->str;
 		return;
 	}
 	else 
@@ -106,7 +147,6 @@ std::string Huffman::countCharWithFreq(std::string str)
 			// print the character along with its
 			// frequency
 			finalone = finalone + str[i];
-			letters += str[i];
 			finalone = finalone + "-";
 
 			std::string out_string;
