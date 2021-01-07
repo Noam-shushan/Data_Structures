@@ -31,11 +31,15 @@ class Huffman
 
 	HuffmanNode* root;
 	std::priority_queue<HuffmanNode*, std::vector<HuffmanNode*>, compareNode> tree;
+	
 public:
+	std::string letters = "";
+	std::string treeStruct = "";
 	Huffman(std::string word);
 	~Huffman();
 	void decode();
 	void encod(std::string word);
+	void setTreeStruct(HuffmanNode* node);
 	int countDifferentChar(std::string s);
 	std::string countCharWithFreq(std::string str);
 	void delMem(HuffmanNode* node);

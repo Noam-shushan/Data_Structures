@@ -31,6 +31,7 @@ Huffman::Huffman(std::string word)
 	}
 	root = tree.top();
 	tree.pop();
+	setTreeStruct(root);
 }
 
 Huffman::~Huffman()
@@ -47,9 +48,24 @@ void Huffman::encod(std::string word)
 {
 	std::stringstream out;
 	std::string freqTable = countCharWithFreq(word);
-	out << countDifferentChar(word) << "\n" << freqTable << "\n";
+	out << countDifferentChar(word) << "\n" << letters << "\n";
+
 }
 
+void Huffman::setTreeStruct(HuffmanNode* node)
+{
+	if (node->isLeaf) 
+	{
+		treeStruct += "1";
+		return;
+	}
+	else 
+	{
+		treeStruct += "0";
+		setTreeStruct(node->left);
+	}
+	setTreeStruct(node->right);
+}
 
 int Huffman::countDifferentChar(std::string str)
 {
@@ -84,11 +100,13 @@ std::string Huffman::countCharWithFreq(std::string str)
 
 		// if frequency of character str[i] is not
 		// equal to 0
-		if (freq[str[i] - 'a'] != 0) {
+		if (freq[str[i] - 'a'] != 0)
+		{
 
 			// print the character along with its
 			// frequency
 			finalone = finalone + str[i];
+			letters += str[i];
 			finalone = finalone + "-";
 
 			std::string out_string;
