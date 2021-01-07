@@ -1,13 +1,13 @@
 #include <iostream>
 #include "Huffman.h"
-using namespace std;
+
 
 int main()
 {
 	int choice;
 	//Huffman
-	Huffman t;
-	cout << t.countDifferentChar("abbccvfaa") << "\n" << t.countCharWithFreq("abbccvfaa");
+	Huffman t("abbcd");
+	std::cout << t.countDifferentChar("abbccvfaa") << "\n" << t.countCharWithFreq("abbccvfaa");
 	//cout << "enter 1 to encode a text\n";
 	//cout << "enter 2 to decode a text\n";
 	//cout << "enter 3 to exit\n";

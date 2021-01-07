@@ -1,28 +1,53 @@
 #include "Huffman.h"
 
-Huffman::Huffman()
+Huffman::Huffman(std::string word)
 {
+	std::string freqTable = countCharWithFreq(word);
+	for (std::string::size_type i = 0; i < freqTable.size(); i++) 
+	{
+		if (freqTable[i] != ' ' && i < freqTable.size() + 2)
+		{
+			if (isalnum(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i+2])) 
+			{
+				char c = freqTable[i];
+				int freq = static_cast<int>(freqTable[i + 2] - '0');
+				HuffmanNode* node = new HuffmanNode(freq, c);
+				tree.push(node);
+			}
+		}
+	}
+	for(int i = 0; i < tree.size() + 1; i++)
+	{
+		HuffmanNode* min1 = tree.top();
+		tree.pop();
+		HuffmanNode* min2 = tree.top();
+		tree.pop();
+		HuffmanNode* ptr = new HuffmanNode(0, 0);
+		ptr->frequency = min1->frequency + min2->frequency;
+		ptr->isLeaf = false;
+		ptr->right = min2;
+		ptr->left = min1;
+		tree.push(ptr);
+	}
+	root = tree.top();
+	tree.pop();
 }
 
 Huffman::~Huffman()
 {
+	delMem(root);
 }
 
-void Huffman::decode(std::string word)
+void Huffman::decode()
 {
-	//std::string freqTable = countCharWithFreq(word);
-	//int numOfChar = countDifferentChar(word);
-	//for (std::string::size_type j = 0; j < freqTable.size(); j++) 
-	//{
-	//	if (freqTable[j] != ' ') 
-	//	{
-	//		HuffmanNode* newNode = new HuffmanNode(fraq[])
-	//	}
-	//}
+
 }
 
-void Huffman::encod()
+void Huffman::encod(std::string word)
 {
+	std::stringstream out;
+	std::string freqTable = countCharWithFreq(word);
+	out << countDifferentChar(word) << "\n" << freqTable << "\n";
 }
 
 
@@ -31,7 +56,7 @@ int Huffman::countDifferentChar(std::string str)
 
 	std::unordered_map<char, int> map;
 
-	for (std::string::size_type i = 0; i < str.length(); i++) 
+	for (std::string::size_type i = 0; i < str.length(); i++)
 	{
 		map[str[i]]++;
 	}
@@ -79,4 +104,18 @@ std::string Huffman::countCharWithFreq(std::string str)
 		}
 	}
 	return finalone;
+}
+
+void Huffman::delMem(HuffmanNode* node)
+{
+	if (node == NULL)	
+		return;
+
+	if (node->left != NULL)
+		delMem(node->left);
+	
+	if (node->right != NULL)
+		delMem(node->right);
+	
+	delete node;
 }

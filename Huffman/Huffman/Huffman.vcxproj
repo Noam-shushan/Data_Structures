@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6c00b6ac-cc0c-4812-b268-30837d7d1d33}</ProjectGuid>
+    <ProjectGuid>{7b7e913c-0d6e-4c91-9b99-590fc200d0d6}</ProjectGuid>
     <RootNamespace>Huffman</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
