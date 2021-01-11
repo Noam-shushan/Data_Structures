@@ -1,16 +1,6 @@
 #include "Huffman.h"
 
-Huffman::Huffman()
-{
-	
-}
-
-Huffman::~Huffman()
-{
-	delMem(root);
-}
-
-void Huffman::setWord(std::string word)
+Huffman::Huffman(std::string word)
 {
 	_word = word;
 	std::string freqTable = countCharWithFreq(word);
@@ -46,6 +36,12 @@ void Huffman::setWord(std::string word)
 	setCode(word);
 }
 
+Huffman::~Huffman()
+{
+	delMem(root);
+}
+
+
 std::string Huffman::encod()
 {
 	std::stringstream out;
@@ -66,26 +62,15 @@ std::string Huffman::decode(int numOfDif, std::string difLetters,
 	setLetters(tempRoot, difLetters, 0);
 
 	std::stringstream out;
-	int i = 1;
-	for (int j = 0; j < code.size() ; j++)
+	for (int i = 1; i < numOfDif; i++)
 	{
-		std::string sub = code.substr(j, i);
-		char res = 0;
-		if (getLetter(tempRoot, sub, &res))
-			out << res;
-		else
+		for (int j = 0; j < code.size(); j++)
 		{
-			for (int k = 2; k < numOfDif + 1; k++)
-			{
-				std::string sub = code.substr(j, k);
-				char res = 0;
-				if (getLetter(tempRoot, sub, &res))
-				{
-					out << res;
-					j += (k-1);
-					break;
-				}
-			}
+			std::string sub = code.substr(j, i);
+			char res = 0;
+			if (getLetter(tempRoot, sub, &res))
+				out << res;
+
 		}
 	}
 

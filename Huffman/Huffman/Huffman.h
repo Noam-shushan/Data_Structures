@@ -52,11 +52,11 @@ private:
 
 public:
 
-	Huffman();
+	Huffman(std::string word);
 	~Huffman();
 	std::string decode(int numOfDif, std::string difLetters,
 		std::string wordStruct, std::string code);
 	std::string encod();
-	void setWord(std::string word);
+	
 };
 

@@ -5,9 +5,12 @@ using namespace std;
 int main()
 {
 	int choice;
-	//Huffman
 
-	Huffman *t = new Huffman;
+	//Huffman
+	Huffman t("aaabaaac");
+
+	std::cout << t.encod();
+	std::cout << t.decode(3, "bca", "00111", "1110011101");
 	
 	cout << "enter 1 to encode a text\n";
 	cout << "enter 2 to decode a text\n";
@@ -27,19 +30,10 @@ int main()
 		case 1:
 			cout << "enter the original text" << endl;
 			cin >> word;
-			t->setWord(word);
-			t->encod();
+		
 			break;
 		case 2:
-			cout << "enter n" << endl;
-			cin >> number;
-			cout << "enter the letters" << endl;
-			cin >> letters;
-			cout << "enter the encoded structure" << endl;
-			cin >> encodedStruct;
-			cout << "enter the encoded text" << endl;
-			cin >> encodedtext;
-			t->decode(number, letters, encodedStruct, encodedtext);
+			break;
 		}
 
 	} while (choice != 3);
