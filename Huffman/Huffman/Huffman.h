@@ -19,7 +19,7 @@ class Huffman
 		HuffmanNode* right;
 		HuffmanNode* father;
 		std::string code;
-		HuffmanNode(int f, char s) : frequency(f), str(s), left(NULL), right(NULL), isLeaf(true), father(NULL)  {}
+		HuffmanNode(int f, char s) : frequency(f), str(s), left(NULL), right(NULL), isLeaf(true), father(NULL) {}
 		HuffmanNode(int f, char c, bool l) : frequency(f), str(c), left(NULL), right(NULL), isLeaf(l), father(NULL) {}
 		friend compareNode;
 	};
@@ -51,11 +51,12 @@ private:
 	void delMem(HuffmanNode* node);
 
 public:
-	
-	Huffman(std::string word);
+
+	Huffman();
 	~Huffman();
 	std::string decode(int numOfDif, std::string difLetters,
 		std::string wordStruct, std::string code);
 	std::string encod();
+	void setWord(std::string word);
 };
 

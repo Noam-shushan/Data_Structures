@@ -1,6 +1,16 @@
 #include "Huffman.h"
 
-Huffman::Huffman(std::string word)
+Huffman::Huffman()
+{
+	
+}
+
+Huffman::~Huffman()
+{
+	delMem(root);
+}
+
+void Huffman::setWord(std::string word)
 {
 	_word = word;
 	std::string freqTable = countCharWithFreq(word);
@@ -34,11 +44,6 @@ Huffman::Huffman(std::string word)
 	setTreeStruct(root);
 	setNodeCode(root, "");
 	setCode(word);
-}
-
-Huffman::~Huffman()
-{
-	delMem(root);
 }
 
 std::string Huffman::encod()
