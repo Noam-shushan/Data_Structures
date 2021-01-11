@@ -1,39 +1,8 @@
 #include "Huffman.h"
 
-Huffman::Huffman(std::string word)
+Huffman::Huffman()
 {
-	_word = word;
-	std::string freqTable = countCharWithFreq(word);
-	for (std::string::size_type i = 0; i < freqTable.size(); i++) 
-	{
-		if (freqTable[i] != ' ' && i < freqTable.size() + 2)
-		{
-			if (isalnum(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i+2])) 
-			{
-				char c = freqTable[i];
-				int freq = static_cast<int>(freqTable[i + 2] - '0');
-				HuffmanNode* node = new HuffmanNode(freq, c);
-				tree.push(node);
-			}
-		}
-	}
-	for(int i = 0; i < tree.size() + 1; i++)
-	{
-		HuffmanNode* min1 = tree.top();
-		tree.pop();
-		HuffmanNode* min2 = tree.top();
-		tree.pop();
-		HuffmanNode* ptr = new HuffmanNode(min1->frequency + min2->frequency, 0, false);
-		ptr->right = min2;
-		ptr->left = min1;
-		min1->father = min2->father = ptr;
-		tree.push(ptr);
-	}
-	root = tree.top();
-	tree.pop();
-	setTreeStruct(root);
-	setNodeCode(root, "");
-	setCode(word);
+
 }
 
 Huffman::~Huffman()
@@ -41,11 +10,22 @@ Huffman::~Huffman()
 	delMem(root);
 }
 
-std::string Huffman::encod()
+void Huffman::build(std::string word)
+{
+	_word = word;
+	std::string freqTable = countCharWithFreq(word);
+	buildQueue(freqTable);
+	buildTree();
+	setTreeStruct(root);
+	setNodeCode(root, "");
+	setCode(word);
+}
+
+std::string Huffman::encode()
 {
 	std::stringstream out;
 	std::string freqTable = countCharWithFreq(_word);
-	out << countDifferentChar(_word) << "\n"
+	out << _letters.size() << "\n"
 		<< _letters << "\n"
 		<< _treeStruct << "\n"
 		<< _code << "\n";
@@ -61,20 +41,63 @@ std::string Huffman::decode(int numOfDif, std::string difLetters,
 	setLetters(tempRoot, difLetters, 0);
 	
 	std::stringstream out;
-	for(int i = 1; i < numOfDif; i++) 
+	int i = 0, codeSizeOfLetter = 1;
+	while(i < code.size())
 	{
-		for (int j = 0; j < code.size() - numOfDif; j++)
+		std::string sub = code.substr(i, codeSizeOfLetter);
+		char res = 0;
+		if (codeSizeOfLetter >= numOfDif) 
 		{
-			std::string sub = code.substr(j, i);
-			char res = 0;
-			if (getLetter(tempRoot, sub, &res))
-				out << res;
+			return "Erorr";
 		}
+		if (getLetter(tempRoot, sub, &res)) 
+		{
+			out << res;
+			i += codeSizeOfLetter;
+			codeSizeOfLetter = 1;
+		}
+		else 
+		{
+			codeSizeOfLetter++;
+		}		
 	}
-	
 	delMem(tempRoot);
 	
 	return out.str();
+}
+
+void Huffman::buildTree()
+{
+	for (int i = 0; i < tree.size() + 1; i++)
+	{
+		HuffmanNode* min1 = tree.top();
+		tree.pop();
+		HuffmanNode* min2 = tree.top();
+		tree.pop();
+		HuffmanNode* ptr = new HuffmanNode(min1->frequency + min2->frequency, 0, false);
+		ptr->right = min2;
+		ptr->left = min1;
+		tree.push(ptr);
+	}
+	root = tree.top();
+	tree.pop();
+}
+
+void Huffman::buildQueue(std::string freqTable)
+{
+	for (std::string::size_type i = 0; i < freqTable.size(); i++)
+	{
+		if (freqTable[i] != ' ' && i < freqTable.size() + 2)
+		{
+			if (isalnum(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i + 2]))
+			{
+				char c = freqTable[i];
+				int freq = static_cast<int>(freqTable[i + 2] - '0');
+				HuffmanNode* node = new HuffmanNode(freq, c);
+				tree.push(node);
+			}
+		}
+	}
 }
 
 int _count = 0;
@@ -97,6 +120,7 @@ void Huffman::bulidTreeFromStruct(HuffmanNode* node, std::string wordStruct, int
 {
 	if (ind >= wordStruct.size())
 		return;
+	
 	if (wordStruct[ind] == '0') 
 	{
 		node->left = new HuffmanNode(0, 0, false);
@@ -182,18 +206,6 @@ void Huffman::setTreeStruct(HuffmanNode* node)
 	setTreeStruct(node->right);
 }
 
-int Huffman::countDifferentChar(std::string str)
-{
-
-	std::unordered_map<char, int> map;
-
-	for (std::string::size_type i = 0; i < str.length(); i++)
-	{
-		map[str[i]]++;
-	}
-
-	return map.size();
-}
 std::string Huffman::countCharWithFreq(std::string str)
 {
 	std::string finalone;
@@ -201,10 +213,7 @@ std::string Huffman::countCharWithFreq(std::string str)
 	int n = str.size();
 
 	// 'freq[]' implemented as hash table
-	int freq[26];
-
-	// initialize all elements of freq[] to 0
-	memset(freq, 0, sizeof(freq));
+	int freq[26] = {0};
 
 	// accumulate freqeuncy of each character in 'str'
 	for (int i = 0; i < n; i++)

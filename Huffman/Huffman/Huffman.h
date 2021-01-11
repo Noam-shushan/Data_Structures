@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include<queue>
-#include<cstring>
-#include <unordered_map>
 #include <sstream>
 
 
@@ -17,10 +15,9 @@ class Huffman
 		bool isLeaf;
 		HuffmanNode* left;
 		HuffmanNode* right;
-		HuffmanNode* father;
 		std::string code;
-		HuffmanNode(int f, char s) : frequency(f), str(s), left(NULL), right(NULL), isLeaf(true), father(NULL)  {}
-		HuffmanNode(int f, char c, bool l) : frequency(f), str(c), left(NULL), right(NULL), isLeaf(l), father(NULL) {}
+		HuffmanNode(int f, char s) : frequency(f), str(s), left(NULL), right(NULL), isLeaf(true)  {}
+		HuffmanNode(int f, char c, bool l) : frequency(f), str(c), left(NULL), right(NULL), isLeaf(l) {}
 		friend compareNode;
 	};
 
@@ -46,16 +43,18 @@ private:
 	bool getLetter(HuffmanNode* node, std::string nodeCode, char* res);
 	void setCode(std::string word);
 	void setTreeStruct(HuffmanNode* node);
-	int countDifferentChar(std::string s);
 	std::string countCharWithFreq(std::string str);
 	void delMem(HuffmanNode* node);
+	void buildTree();
+	void buildQueue(std::string freqTable);
 
 public:
 	
-	Huffman(std::string word);
+	Huffman();
 	~Huffman();
+	void build(std::string word);
 	std::string decode(int numOfDif, std::string difLetters,
 		std::string wordStruct, std::string code);
-	std::string encod();
+	std::string encode();
 };
 
