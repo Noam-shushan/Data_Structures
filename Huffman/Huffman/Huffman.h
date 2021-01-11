@@ -2,7 +2,7 @@
 #include <string>
 #include<queue>
 #include <sstream>
-
+#include "FrequencyTable.h"
 
 class compareNode;
 class Huffman
@@ -35,6 +35,7 @@ private:
 	std::string _treeStruct;
 	std::string _code;
 	std::string _word;
+	FrequencyTable* _frequencyTable;
 
 	void setLetters(HuffmanNode* node, std::string difLetters, int ind);
 	void bulidTreeFromStruct(HuffmanNode* node, std::string wordStruct, int ind);
@@ -43,10 +44,9 @@ private:
 	bool getLetter(HuffmanNode* node, std::string nodeCode, char* res);
 	void setCode(std::string word);
 	void setTreeStruct(HuffmanNode* node);
-	std::string countCharWithFreq(std::string str);
 	void delMem(HuffmanNode* node);
 	void buildTree();
-	void buildQueue(std::string freqTable);
+	void buildQueue();
 public:
 	
 	Huffman();

@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FrequencyTable.cpp" />
     <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FrequencyTable.h" />
     <ClInclude Include="Huffman.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

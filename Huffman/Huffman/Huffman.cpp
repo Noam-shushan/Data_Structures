@@ -8,13 +8,14 @@ Huffman::Huffman()
 Huffman::~Huffman()
 {
 	delMem(root);
+	delete _frequencyTable;
 }
 
 void Huffman::build(std::string word)
 {
-	_word = word;
-	std::string freqTable = countCharWithFreq(word);
-	buildQueue(freqTable);
+	_word = word;;
+	_frequencyTable = new FrequencyTable(word);
+	buildQueue();
 	buildTree();
 	setTreeStruct(root);
 	setNodeCode(root, "");
@@ -24,7 +25,6 @@ void Huffman::build(std::string word)
 std::string Huffman::encode()
 {
 	std::stringstream out;
-	std::string freqTable = countCharWithFreq(_word);
 	out << _letters.size() << "\n"
 		<< _letters << "\n"
 		<< _treeStruct << "\n"
@@ -83,24 +83,13 @@ void Huffman::buildTree()
 	tree.pop();
 }
 
-void Huffman::buildQueue(std::string freqTable)
+void Huffman::buildQueue()
 {
-	for (std::string::size_type i = 0; i < freqTable.size(); i++)
+	for (std::map<char, int>::iterator iter = _frequencyTable->begin(); 
+		iter != _frequencyTable->end(); iter++) 
 	{
-		if (freqTable[i] != ' ' && i < freqTable.size() + 2)
-		{
-			if (isalpha(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i + 2]))
-			{
-				std::string strFreq = freqTable.substr(i + 2, freqTable.size() - (i + 2));
-				int j = 0;
-				while (strFreq[j++] != ' ');
-				strFreq = strFreq.substr(0, j);
-				int freq = stoi(strFreq);
-				char c = freqTable[i];
-				HuffmanNode* node = new HuffmanNode(freq, c);
-				tree.push(node);
-			}
-		}
+		HuffmanNode* node = new HuffmanNode(iter->second, iter->first);
+		tree.push(node);
 	}
 }
 
@@ -208,45 +197,6 @@ void Huffman::setTreeStruct(HuffmanNode* node)
 		setTreeStruct(node->left);
 	}
 	setTreeStruct(node->right);
-}
-
-std::string Huffman::countCharWithFreq(std::string str)
-{
-	std::string finalone;
-
-	// 'freq[]' implemented as hash table
-	int freq[26] = { 0 };
-
-	// accumulate freqeuncy of each character in 'str'
-	for (int i = 0; i < str.size(); i++)
-		freq[str[i] - 'a']++;
-
-	// traverse 'str' from left to right
-	for (int i = 0; i < str.size(); i++) {
-
-		// if frequency of character str[i] is not
-		// equal to 0
-		if (freq[str[i] - 'a'] != 0)
-		{
-
-			// print the character along with its
-			// frequency
-			finalone = finalone + str[i];
-			finalone = finalone + "-";
-
-			std::string out_string;
-			std::stringstream ss;
-			ss << freq[str[i] - 'a'];
-			out_string = ss.str();
-
-			finalone = finalone + out_string;
-			finalone = finalone + ' ';
-
-
-			freq[str[i] - 'a'] = 0;
-		}
-	}
-	return finalone;
 }
 
 void Huffman::delMem(HuffmanNode* node)
