@@ -2,7 +2,7 @@
 
 Huffman::Huffman()
 {
-	//
+
 }
 
 Huffman::~Huffman()
