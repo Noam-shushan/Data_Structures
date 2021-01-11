@@ -93,6 +93,11 @@ void Huffman::buildQueue(std::string freqTable)
 			{
 				char c = freqTable[i];
 				int freq = static_cast<int>(freqTable[i + 2] - '0');
+				if (isalnum(freqTable[i + 3]))
+				{
+					freq *= 10;
+					freq += static_cast<int>(freqTable[i + 3] - '0');
+				}
 				HuffmanNode* node = new HuffmanNode(freq, c);
 				tree.push(node);
 			}
