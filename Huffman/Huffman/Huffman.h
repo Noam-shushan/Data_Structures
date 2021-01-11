@@ -47,7 +47,6 @@ private:
 	void delMem(HuffmanNode* node);
 	void buildTree();
 	void buildQueue(std::string freqTable);
-
 public:
 	
 	Huffman();

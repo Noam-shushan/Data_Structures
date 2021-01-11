@@ -68,7 +68,7 @@ std::string Huffman::decode(int numOfDif, std::string difLetters,
 
 void Huffman::buildTree()
 {
-	for (int i = 0; i < tree.size() + 1; i++)
+	while (tree.size() > 1)
 	{
 		HuffmanNode* min1 = tree.top();
 		tree.pop();
@@ -89,10 +89,14 @@ void Huffman::buildQueue(std::string freqTable)
 	{
 		if (freqTable[i] != ' ' && i < freqTable.size() + 2)
 		{
-			if (isalnum(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i + 2]))
+			if (isalpha(freqTable[i]) && freqTable[i + 1] == '-' && isalnum(freqTable[i + 2]))
 			{
+				std::string strFreq = freqTable.substr(i + 2, freqTable.size() - (i + 2));
+				int j = 0;
+				while (strFreq[j++] != ' ');
+				strFreq = strFreq.substr(0, j);
+				int freq = stoi(strFreq);
 				char c = freqTable[i];
-				int freq = static_cast<int>(freqTable[i + 2] - '0');
 				HuffmanNode* node = new HuffmanNode(freq, c);
 				tree.push(node);
 			}
@@ -209,18 +213,16 @@ void Huffman::setTreeStruct(HuffmanNode* node)
 std::string Huffman::countCharWithFreq(std::string str)
 {
 	std::string finalone;
-	// size of the string 'str'
-	int n = str.size();
 
 	// 'freq[]' implemented as hash table
 	int freq[26] = { 0 };
 
 	// accumulate freqeuncy of each character in 'str'
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < str.size(); i++)
 		freq[str[i] - 'a']++;
 
 	// traverse 'str' from left to right
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < str.size(); i++) {
 
 		// if frequency of character str[i] is not
 		// equal to 0
