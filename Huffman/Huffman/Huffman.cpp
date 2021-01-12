@@ -32,38 +32,20 @@ std::string Huffman::encode()
 	return out.str();
 }
 
+int _count = 0;
+int _count2 = 0;
 std::string Huffman::decode(int numOfDif, std::string difLetters,
 	std::string wordStruct, std::string code)
 {
 	HuffmanNode* tempRoot = new HuffmanNode(0, 0, false);
 	bulidTreeFromStruct(tempRoot, wordStruct, 0);
+	_count2 = 0;
 	setNodeCode(tempRoot, "");
 	setLetters(tempRoot, difLetters, 0);
-
-	std::stringstream out;
-	int i = 0, codeSizeOfLetter = 1;
-	while (i < code.size())
-	{
-		std::string sub = code.substr(i, codeSizeOfLetter);
-		char res = 0;
-		if (codeSizeOfLetter >= numOfDif)
-		{
-			return "Erorr";
-		}
-		if (getLetter(tempRoot, sub, &res))
-		{
-			out << res;
-			i += codeSizeOfLetter;
-			codeSizeOfLetter = 1;
-		}
-		else
-		{
-			codeSizeOfLetter++;
-		}
-	}
+	_count = 0;
+	std::string out = getTheWordDecoded(tempRoot, numOfDif, code);
 	delMem(tempRoot);
-
-	return out.str();
+	return out;
 }
 
 void Huffman::buildTree()
@@ -93,12 +75,40 @@ void Huffman::buildQueue()
 	}
 }
 
-int _count = 0;
+std::string Huffman::getTheWordDecoded(HuffmanNode* node, int  numOfDif,std::string code)
+{
+	std::stringstream out;
+	int i = 0, codeSizeOfLetter = 1;
+	while (i < code.size())
+	{
+		std::string sub = code.substr(i, codeSizeOfLetter);
+		char res = 0;
+		if (codeSizeOfLetter >= numOfDif)
+		{
+			return "Erorr";
+		}
+		if (getLetter(node, sub, &res))
+		{
+			out << res;
+			i += codeSizeOfLetter;
+			codeSizeOfLetter = 1;
+		}
+		else
+		{
+			codeSizeOfLetter++;
+		}
+	}
+
+	return out.str();
+}
+
 void Huffman::setLetters(HuffmanNode* node, std::string difLetters, int ind)
 {
 	if (ind == difLetters.size())
+	{
 		return;
-
+	}
+	
 	if (node->isLeaf)
 	{
 		node->str = difLetters[ind];
@@ -109,23 +119,28 @@ void Huffman::setLetters(HuffmanNode* node, std::string difLetters, int ind)
 	setLetters(node->right, difLetters, _count);
 }
 
+
 void Huffman::bulidTreeFromStruct(HuffmanNode* node, std::string wordStruct, int ind)
 {
-	if (ind >= wordStruct.size())
+	if (ind == wordStruct.size()) 
+	{
 		return;
-
+	}
+		
 	if (wordStruct[ind] == '0')
 	{
 		node->left = new HuffmanNode(0, 0, false);
 		node->right = new HuffmanNode(0, 0, false);
-		bulidTreeFromStruct(node->left, wordStruct, ind + 1);
+		_count2++;
+		bulidTreeFromStruct(node->left, wordStruct, _count2);
 	}
 	if (wordStruct[ind] == '1')
 	{
 		node->isLeaf = true;
+		_count2++;
 		return;
 	}
-	bulidTreeFromStruct(node->right, wordStruct, ind + 2);
+	bulidTreeFromStruct(node->right, wordStruct, _count2);
 }
 
 void Huffman::setNodeCode(HuffmanNode* node, std::string nodeCode)

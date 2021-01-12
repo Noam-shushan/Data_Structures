@@ -1,6 +1,10 @@
 #include <iostream>
 #include "Huffman.h"
 
+/// authors:
+/// noam shushan 314717588
+/// shmuel verse 1666859  
+
 using namespace std;
 
 

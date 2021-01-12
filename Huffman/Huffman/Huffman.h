@@ -47,6 +47,7 @@ private:
 	void delMem(HuffmanNode* node);
 	void buildTree();
 	void buildQueue();
+	std::string getTheWordDecoded(HuffmanNode* node, int  numOfDif, std::string code);
 public:
 	
 	Huffman();
